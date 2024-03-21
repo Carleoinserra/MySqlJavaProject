@@ -22,6 +22,7 @@ public class UtilizzaProdotti {
 		// Lista per memorizzare i prodotti
         List<Prodotto> listaProdotti = new ArrayList<>();
         String selectQuery = "SELECT * FROM prodotti";
+        String query1 = "SELECT * FROM prodotti WHERE nome = (?)";
 		do {
 			scelta = input.nextInt();
 			if (scelta == 1) {
@@ -89,8 +90,36 @@ public class UtilizzaProdotti {
 				
 				
 			}
+			else if (scelta == 3) {
+				System.out.println("inserisci il prodotto da ricercare");
+				Scanner input3 = new Scanner (System.in);
+				String prodotto = input3.nextLine();
+				try (Connection conn = DriverManager.getConnection(url + dbName, user, password);
+			    PreparedStatement stmt = conn.prepareStatement(query1))
+				
+				{
+					stmt.setString(1, prodotto);
+					ResultSet rs = stmt.executeQuery();
+					 while (rs.next()) {
+			                int id = rs.getInt("id");
+			                String nome = rs.getString("nome");
+			                double prezzo = rs.getDouble("prezzo");
+			                int quantita = rs.getInt("quantita");
+			                System.out.print(id);
+			                System.out.print(nome);
+			                System.out.print(prezzo);
+			                System.out.print(quantita);
+				
+			}
 			
-		}
+		}catch (SQLException e) {
+            // Gestione dell'eccezione per la connessione al database o l'esecuzione della query
+            System.out.println("Errore durante l'inserimento dei dati nella tabella 'prodotti':");
+            e.printStackTrace();
+        }
+				
+			
+			}}
 		while(scelta != 0);
 		
-}}
+			}} 
